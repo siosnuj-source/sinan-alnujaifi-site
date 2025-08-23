@@ -1,0 +1,405 @@
+@import url("https://fonts.googleapis.com/css?family=Quicksand:400,500,700&subset=latin-ext&display=swap");
+
+html { position: relative; overflow-x: hidden !important; }
+* { box-sizing: border-box; }
+body { font-family: 'Quicksand', sans-serif; color: #324e63; }
+a, a:hover { text-decoration: none; }
+
+.icon { display:inline-block; width:1em; height:1em; stroke-width:0; stroke:currentColor; fill:currentColor; }
+
+/* ========= متغيرات عامة ========= */
+:root{
+  /* تكبير/تصغير أيقونات السوشيال */
+  --soc-size: 80px;
+  --soc-font: 38px;
+
+  /* أحجام ومسافات اللوغوهات */
+  --logo-height: 90px;
+  --logo-gap: 50px;
+  --logo-mt: 4px;     /* المسافة من أعلى الصفحة */
+  --logo-mb: 0px;     /* المسافة قبل المخطوطة */
+
+  /* المخطوطة */
+  --makh-gap-mobile: 22px;
+
+  /* مسافة أعلى المحتوى كله */
+  --wrapper-pt: 35px;
+
+  /* إعدادات حلقة توهج الإطار حول صورة البروفايل */
+  --ring-color: #6b8e23;      /* زيتوني */
+  --ring-thickness: 7px;
+  --ring-glow-speed: 3.6s;    /* قلّل الرقم = أسرع */
+  --ring-glow-alpha: .65;
+}
+
+/* الحاوية العامة + الخلفية JPG */
+.wrapper{
+  position: relative;
+  width:100%;
+  min-height:100vh;
+  padding:50px 20px;
+  padding-top:var(--wrapper-pt);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  background-image:url(../images/background.jpg); /* مسار نسبي */
+  background-repeat:no-repeat;
+  background-size:cover;
+}
+
+/* ⭐ طبقة النجوم */
+.bg-stars{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+}
+.bg-stars use{
+  fill:#ffffff;
+  opacity:.03;
+  animation: starsPulse 3s ease-in-out infinite alternate;
+}
+.bg-stars .d1{ animation-delay: 0s; }
+.bg-stars .d2{ animation-delay: .6s; }
+.bg-stars .d3{ animation-delay: 1.2s; }
+.bg-stars .d4{ animation-delay: 1.8s; }
+.bg-stars .d5{ animation-delay: 2.4s; }
+
+@keyframes starsPulse{
+  from{ opacity:.02; }
+  to  { opacity:.05; }
+}
+
+/* ✅ على الموبايل: كبّر النجوم */
+@media (max-width:768px){
+  .bg-stars use{
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(1.9);
+  }
+}
+
+/* اللوغوهات أعلى الصفحة */
+.top-logos{
+  position: relative;
+  z-index: 2;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:var(--logo-gap);
+  padding:6px 12px;
+  margin:var(--logo-mt) 0 var(--logo-mb);
+}
+.top-logo{
+  height:var(--logo-height);
+  width:auto;
+  object-fit:contain;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,.12));
+}
+
+/* شاشات متوسطة */
+@media (min-width: 768px){
+  :root{
+    --logo-height: 84px;
+    --logo-gap: 40px;
+  }
+}
+
+/* شاشات كبيرة جداً: توزيع ثابت مع إزاحة */
+@media (min-width: 1400px){
+  .top-logos{
+    position:relative;
+    display:block;
+    height:calc(var(--logo-height) + 10px);
+    margin-bottom:2px;
+  }
+  .top-logo{
+    position:absolute; top:0; height:var(--logo-height);
+  }
+  .top-logo.center{ left:50%; transform:translateX(-50%); }
+  .top-logo.left{   left:50%; transform:translateX(-50%) translateX(-300px); }
+  .top-logo.right{  left:50%; transform:translateX(-50%) translateX(300px); }
+}
+
+/* =========================
+   المخطوطة + توهج النيون
+   ========================= */
+.makh-wrap{
+  position: relative;
+  z-index: 2;
+  display:block;
+  width:700px;
+  max-width:80vw;
+  margin:8px auto 6px;
+}
+@media (max-width: 768px){
+  :root{ --makh-gap-mobile: 14px; }
+  .top-logos{ padding:4px 10px 2px; gap:12px; }
+  .makh-wrap{ margin: var(--makh-gap-mobile) auto 12px; }
+}
+@media (min-width: 1200px){
+  .makh-wrap{ margin:4px auto -6px; }
+}
+
+/* صورة المخطوطة نفسها */
+.makh-deco{
+  display:block;
+  width:100%;
+  height:auto;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,.15));
+}
+
+/* ✅ توهج النيون فوق المخطوطة (قناع بنفس صورة المخطوطة) */
+.makh-glow{
+  position:absolute;
+  inset:0;
+  z-index: 3;
+  pointer-events:none;
+
+  -webkit-mask-image: url(../images/makh.png); /* مسار نسبي */
+          mask-image: url(../images/makh.png);
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+          mask-position: center;
+  -webkit-mask-size: contain;
+          mask-size: contain;
+
+  background: linear-gradient(90deg,
+              rgba(47,229,174,0) 0%,
+              rgba(47,229,174,0.18) 46%,
+              rgb(95, 179, 130)    50%,
+              rgba(47,229,174,0.18) 54%,
+              rgba(47,229,174,0) 100%);
+  background-size: 220% 100%;
+  filter: blur(10px) saturate(120%);
+  opacity: 1;
+  animation: sweepGlow 3.2s linear infinite;
+  animation-direction: reverse; /* من اليمين إلى اليسار */
+}
+
+@keyframes sweepGlow{
+  from { background-position: 100% 0; }
+  to   { background-position:   0% 0; }
+}
+
+/* بديل إن لم يدعم المتصفح الـ masks */
+@supports not (mask-image: url("x")){
+  .makh-glow{ display:none; }
+  .makh-deco{
+    filter:
+      drop-shadow(0 0 12px rgba(47,229,174,.35))
+      drop-shadow(0 0 22px rgba(47,229,174,.25));
+  }
+}
+
+/* بطاقة البروفايل */
+.profile-card{
+  position: relative;
+  z-index: 2;
+  width:100%;
+  max-width:700px;
+  min-height:460px;
+  margin:12px auto 24px;
+  background:#d6e4da; /* لون الصندوق */
+  border-radius:12px;
+  box-shadow:0 8px 60px -10px rgba(13,28,39,.6);
+  padding-top:110px; /* مساحة لنصف صورة البروفايل */
+}
+
+/* صورة البروفايل نصف داخل/نصف خارج */
+.profile-card__img{
+  width:150px; height:150px;
+  position:absolute; left:50%; top:0;
+  transform:translate(-50%, -50%);
+  border-radius:50%; overflow:hidden; z-index:4;
+
+  /* إطار زيتوني ثابت */
+  box-shadow:
+    0 5px 10px 0 #0a432a,
+    0 0 0 var(--ring-thickness) #0a432a;
+}
+
+/* ✅ توهج نيون على محيط الإطار (لا يغطي الصورة) */
+.profile-card__img::after{
+  content:"";
+  position:absolute;
+  inset: calc(-1 * var(--ring-thickness)); /* يغطي سمك الحلقة فقط */
+  border-radius:50%;
+  pointer-events:none;
+  z-index: 1;
+
+  /* قناع لإظهار الحلقة فقط (مركز شفاف) */
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--ring-thickness)), #fff 0);
+          mask: radial-gradient(farthest-side, transparent calc(100% - var(--ring-thickness)), #fff 0);
+
+  /* شريط وميض يمسح الحلقة من اليمين لليسار */
+  background: linear-gradient(90deg,
+              rgba(107,142,35,0) 0%,
+              rgba(107,142,35,0.18) 46%,
+              rgba(107,142,35,1)   50%,
+              rgba(107,142,35,0.18) 54%,
+              rgba(107,142,35,0) 100%);
+  background-size: 220% 100%;
+  filter: blur(6px) saturate(120%);
+  opacity: var(--ring-glow-alpha);
+  animation: ringSweep var(--ring-glow-speed) linear infinite reverse; /* من اليمين لليسار */
+}
+
+@keyframes ringSweep{
+  from { background-position: 100% 0; }
+  to   { background-position:   0% 0; }
+}
+
+@media (max-width:576px){
+  .profile-card__img{ width:120px; height:120px; }
+}
+.profile-card__img img{
+  width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;
+}
+
+/* محتوى البطاقة */
+.profile-card__cnt{
+  text-align:center;
+  padding:0 20px 40px;
+  transition:all .3s;
+}
+.profile-card__name{ font-weight:700; font-size:28px; color:#0b653e; margin-bottom:8px; }
+
+/* ✅ السطور التعريفية + تأثير خلفية متتابع */
+.profile-card__roles{
+  margin: 6px auto 10px;
+  line-height: 1.7;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.role-line{
+  position: relative;
+  font-size:18px;
+  font-weight:600;
+  color:#324e63;
+  padding: 2px 8px;
+  border-radius: 8px;
+  display: block;
+  width: fit-content;
+  margin: 0 auto;
+}
+.role-line::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:8px;
+  background: rgba(47,229,174,.28);
+  opacity:0;
+  transition: opacity .25s linear;
+  animation: roleGlow 20s ease-in-out infinite both;
+}
+.role-line:nth-child(1)::before{ animation-delay: 0s;  }
+.role-line:nth-child(2)::before{ animation-delay: 5s;  }
+.role-line:nth-child(3)::before{ animation-delay: 10s; }
+.role-line:nth-child(4)::before{ animation-delay: 15s; }
+
+@keyframes roleGlow{
+  0%    { opacity:0; }
+  7.5%  { opacity:.65; }  /* 1.5s ظهور تدريجي */
+  17.5% { opacity:.65; }  /* ثبات 2s */
+  25%   { opacity:0; }    /* 1.5s اختفاء تدريجي */
+  100%  { opacity:0; }
+}
+
+/* العنوان القريب من أيقونات التواصل */
+.social-heading{
+  margin: 8px 0 6px;
+  font-size:16px;
+  font-weight:700;
+  color:#0b653e;
+}
+
+/* شبكات التواصل */
+.profile-card-social{
+  margin-top:10px;
+  display:flex; justify-content:center; align-items:center; flex-wrap:wrap;
+}
+@media (min-width:768px){ .profile-card-social{ padding:28px; } }
+
+.profile-card-social__item{
+  display:inline-flex;
+  width:var(--soc-size);
+  height:var(--soc-size);
+  margin:14px;
+  border-radius:50%;
+  align-items:center; justify-content:center;
+  color:#fff; background:#232526;
+  box-shadow:0 7px 30px rgba(43,98,169,.5);
+  font-size:var(--soc-font);
+  flex-shrink:0; transition:all .3s;
+}
+@media (max-width:768px){
+  :root{
+    --soc-size: 68px;
+    --soc-font: 32px;
+  }
+}
+@media (min-width:768px){ .profile-card-social__item:hover{ transform:scale(1.08); } }
+
+/* ألوان الشبكات */
+.profile-card-social__item.facebook{ background:linear-gradient(45deg,#3b5998,#0078d7); box-shadow:0 6px 34px rgba(43,98,169,.7); }
+.profile-card-social__item.x{ background:linear-gradient(45deg,#16202A,#000); box-shadow:0 6px 34px rgba(27,18,18,.7); }
+.profile-card-social__item.telegram{ background:linear-gradient(45deg,#0088cc,#00aced); box-shadow:0 6px 34px rgba(19,127,212,.7); }
+.profile-card-social__item.instagram{ background:linear-gradient(45deg,#405de6,#5851db,#833ab4,#c13584,#e1306c,#fd1d1d); box-shadow:0 6px 34px rgba(120,64,190,.7); }
+.profile-card-social__item.tiktok{ background:linear-gradient(45deg,#16202A,#000); box-shadow:0 6px 34px rgba(27,18,18,.7); }
+.profile-card-social__item.youtube{ background:linear-gradient(45deg,#d5135a,#f05924); box-shadow:0 6px 34px rgba(223,45,70,.7); }
+
+/* (اختياري) أزرار عامة لاحقاً */
+.profile-card__button{
+  background:none; border:none; font-family:'Quicksand',sans-serif; font-weight:700;
+  font-size:19px; margin:15px 35px; padding:15px 40px; min-width:201px; min-height:55px;
+  border-radius:50px; color:#fff; cursor:pointer; transition:all .3s;
+}
+.profile-card__button.button--blue{ background:linear-gradient(45deg,#1da1f2,#0e71c8); box-shadow:0 4px 30px rgba(19,127,212,.4); }
+.profile-card__button.button--orange{ background:linear-gradient(45deg,#d5135a,#f05924); box-shadow:0 4px 30px rgba(223,45,70,.35); }
+.profile-card__button.button--gray{ background:#dcdcdc; color:#142029; box-shadow:none; }
+
+/* ديسكتوب عام */
+@media (min-width: 1024px){
+  :root{
+    --soc-size: 72px;   /* كان 80px */
+    --soc-font: 34px;   /* كان 38px */
+    --logo-height: 100px; /* تكبير بسيط للشعارات */
+  }
+  .top-logos{ margin-bottom: 0; }
+  .makh-wrap{ margin-top: 2px; }
+}
+
+/* شاشات كبيرة جداً */
+@media (min-width: 1400px){
+  :root{
+    --logo-height: 110px;
+  }
+  .top-logos{ margin-bottom: 0; }
+  .makh-wrap{ margin-top: 0; }
+}
+
+/* ====== Gap fallback لمتصفحات لا تدعم flex-gap ====== */
+.top-logos { gap: var(--logo-gap); }
+@supports not (gap: 1rem) {
+  .top-logos { gap: 0; }
+  .top-logo {
+    margin-left:  calc(var(--logo-gap) / 2);
+    margin-right: calc(var(--logo-gap) / 2);
+  }
+  .top-logos {
+    padding-left:  calc(var(--logo-gap) / 2);
+    padding-right: calc(var(--logo-gap) / 2);
+  }
+}
+
+/* ✅ احترام تفضيل تقليل الحركة */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
