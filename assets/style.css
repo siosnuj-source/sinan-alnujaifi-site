@@ -403,3 +403,15 @@ a, a:hover { text-decoration: none; }
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
 }
+
+/* 📱 على الشاشات الصغيرة: صغّر اللوغوهات وخليهم بسطر واحد */
+@media (max-width:576px){
+  .top-logos{
+    flex-wrap: nowrap;              /* لا يلفوا للسطر الثاني */
+    justify-content: space-between; /* توزيع متساوي */
+    gap: 14px;                      /* فراغ أقل بينهم */
+  }
+  .top-logo{
+    height: 54px;                   /* تصغير كافي حتى يدخلوا بخط واحد */
+  }
+}
